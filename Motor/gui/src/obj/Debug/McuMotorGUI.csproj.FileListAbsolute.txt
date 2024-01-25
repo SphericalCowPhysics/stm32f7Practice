@@ -1,0 +1,10 @@
+C:\Users\chris\Desktop\Mcu Practice\McuTest01NeverAlter\McuPlayground-main\McuMotor\gui\src\bin\Debug\McuMotorGUI.exe.config
+C:\Users\chris\Desktop\Mcu Practice\McuTest01NeverAlter\McuPlayground-main\McuMotor\gui\src\bin\Debug\McuMotorGUI.exe
+C:\Users\chris\Desktop\Mcu Practice\McuTest01NeverAlter\McuPlayground-main\McuMotor\gui\src\bin\Debug\McuMotorGUI.pdb
+C:\Users\chris\Desktop\Mcu Practice\McuTest01NeverAlter\McuPlayground-main\McuMotor\gui\src\obj\Debug\McuMotorGUI.csproj.AssemblyReference.cache
+C:\Users\chris\Desktop\Mcu Practice\McuTest01NeverAlter\McuPlayground-main\McuMotor\gui\src\obj\Debug\McuMotorNS.MainForm.resources
+C:\Users\chris\Desktop\Mcu Practice\McuTest01NeverAlter\McuPlayground-main\McuMotor\gui\src\obj\Debug\UilaDesign.Properties.Resources.resources
+C:\Users\chris\Desktop\Mcu Practice\McuTest01NeverAlter\McuPlayground-main\McuMotor\gui\src\obj\Debug\McuMotorGUI.csproj.GenerateResource.cache
+C:\Users\chris\Desktop\Mcu Practice\McuTest01NeverAlter\McuPlayground-main\McuMotor\gui\src\obj\Debug\McuMotorGUI.csproj.CoreCompileInputs.cache
+C:\Users\chris\Desktop\Mcu Practice\McuTest01NeverAlter\McuPlayground-main\McuMotor\gui\src\obj\Debug\McuMotorGUI.exe
+C:\Users\chris\Desktop\Mcu Practice\McuTest01NeverAlter\McuPlayground-main\McuMotor\gui\src\obj\Debug\McuMotorGUI.pdb
