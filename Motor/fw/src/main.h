@@ -15,6 +15,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+	
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f7xx_hal.h"
@@ -23,10 +24,12 @@ extern "C" {
 #include "commands.h"
 	
 //#define EvalKit 1	
-	
+#define BitBangMotor
+//#define InterruptTesting	
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
-	
+
+extern 	uint32_t motorPulseStartTime;
 #ifdef __cplusplus
 }
 #endif

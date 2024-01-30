@@ -23,11 +23,14 @@ void WriteSpi8(uint8_t reg, uint8_t val);
 void WriteSpi16(uint8_t reg, uint16_t val);
 uint8_t ReadSpi8(uint8_t reg);
 int16_t ReadSpi16(uint8_t reg);
-void InitImu(void);
+//uint8_t directionEnable = 1;
+//uint16_t waste;
 
 void InitRegs() {
 	//Power-on intitializations
-	InitImu();
+	Regs.u16[RegMotorSteps], Regs.u16[RegMotorStepTime], Regs.u16[RegMotorDirEnable] = 0;
+	Regs.u16[RegEncoderCwSteps], Regs.u16[RegEncoderCCwSteps] = 0;
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);				//enables motor motion
 }	
 
 //UpdateRegs called periodically in main()
@@ -47,6 +50,7 @@ uint8_t ReadReg(uint16_t nReg) {
 	//In most cases registers are always valid, but for some the value needs to be updated.
 	uint8_t err = 0;
 	uint16_t temp = 0;
+	
     
     if (nReg>=RegLast || nReg>=REG_SIZE16) return 0; //not an error -- just don't read past the end of the register block
     
@@ -69,19 +73,7 @@ uint8_t ReadReg(uint16_t nReg) {
 			break;
 		case RegAdcRef:
 			Regs.u16[nReg] = ReadAdc(17); //internal reference voltage (1.2Vnom), should be around 1.2/3.3*4095 = 1500, can use to calculate voltage of 3.3V supply
-			break;
-		case RegImuWhoAmI: //should read 0x71 = 113
-			Regs.u16[nReg] = ReadSpi8(0x75);
-			break;
-		case RegImuAx:
-			Regs.s16[nReg] = ReadSpi16(0x3b);
-			break;
-		case RegImuAy:
-			Regs.s16[nReg] = ReadSpi16(0x3d);
-			break;
-		case RegImuAz:
-			Regs.s16[nReg] = ReadSpi16(0x3f);
-			break;
+			break;	   
 		default:
 			break;
     }  
@@ -94,11 +86,55 @@ void SetReg(uint16_t nReg, uint16_t value)
 	//This routine called if a write register command received over USB
     if (nReg>=RegLast || nReg>=REG_SIZE16) return;
     
-    switch (nReg) {
-//		case RegAdcTemp:
-//			Regs.u16[nReg] = value;
-//			//SetChannel(value);
-//			break;
+    switch (nReg) 
+    {
+		case RegMotorDirEnable:
+	    Regs.u16[nReg] = value;
+	    /*Tried to fix first pulse delay problem
+	    if ( (value & 0x8000) == 0x8000)
+	    {
+		    motorPulseStartTime = HAL_GetTick();
+		}
+		*/
+			break;
+		case RegMotorSteps:
+			Regs.u16[nReg] = value;
+			break;
+		case RegMotorStepTime:
+			Regs.u16[nReg] = value;
+			break;	
+	    /*	//DO NOT CALL SETREG TO DO THINGS. SetReg should be reserved only for commands received over USB via Parse()
+		case RegMotorDirEnable:
+			Regs.u8[nReg] = value;
+		    directionEnable = value;
+			if ((value & 1) == 1)
+			{
+				HAL_GPIO_WritePin(GPIOI, GPIO_PIN_2, GPIO_PIN_SET);				//set direction of rotation to CW looking toward load
+			}
+			else
+			{
+				HAL_GPIO_WritePin(GPIOI, GPIO_PIN_2, GPIO_PIN_RESET);			//set direction of rotation to CCW looking toward load
+			}
+			if ((value & 0x80) == 0x80)
+			{
+				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);				//enables motor motion
+			}
+			else
+			{
+				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);			//disables motor motion
+			}  
+			break;
+		case RegMotorSteps:
+			Regs.u16[nReg] = value;
+			HAL_GPIO_WritePin(GPIOI, GPIO_PIN_3, GPIO_PIN_SET);					//Take 1 step
+			for (waste = 1; waste < 0x1D00; waste++)
+			{}
+			HAL_GPIO_WritePin(GPIOI, GPIO_PIN_3, GPIO_PIN_RESET);				//Prepare to take another step
+			break;
+		case RegMotorStepTime:
+			Regs.u16[nReg] = value;
+			break;
+	    */
 		default:
 			break;
     }    
@@ -184,11 +220,4 @@ int16_t ReadSpi16(uint8_t reg)
 	return ((rcvDat[1] << 8) | rcvDat[2]);
 }
 
-void InitImu(void)
-{
-	WriteSpi8(0x6b, 0x01); //PWR_MGMT_1 register, select best available clock
-	WriteSpi8(0x1a, 0x06); //CONFIG register, 5Hz filter for gyro
-	WriteSpi8(0x1b, 0x00); //GYRO_CONFIG register, 250dps full scale
-	WriteSpi8(0x1c, 0x00); //ACCEL_CONFIG_1 register, 2g full scale
-	WriteSpi8(0x1d, 0x06); //ACCEL_CONFIG_2 register, 5Hz filter
-}
+

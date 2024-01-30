@@ -26,6 +26,7 @@
 //C:\MicroProjects\McuMotor\fw\src\UsbCdc_STM32F7xx\usbd_conf.c
 
 extern PCD_HandleTypeDef hpcd;
+extern TIM_HandleTypeDef htim2;
 //C:\MicroProjects\McuMotor\fw\src\stm32f7xx_it.c
 
 
@@ -126,4 +127,39 @@ void SysTick_Handler(void)
 void OTG_FS_IRQHandler(void)
 {
   HAL_PCD_IRQHandler(&hpcd);
+}
+/**
+  * @brief This function handles TIM2 global interrupt.
+  */
+void TIM2_IRQHandler(void)
+{
+
+	//HAL_TIM_IRQHandler(&htim2);
+	
+}
+
+/**
+  * @brief This function handles EXTI line[15:10] interrupts.
+  * Use this interrupt to toggle green LED on PI1 using User Button on PI11 as the interrupt trigger
+  */
+void EXTI15_10_IRQHandler(void)
+{
+	/* USER CODE BEGIN EXTI15_10_IRQn 0 */
+
+	/* USER CODE END EXTI15_10_IRQn 0 */
+	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_11);
+	/* USER CODE BEGIN EXTI15_10_IRQn 1 */
+
+	/* USER CODE END EXTI15_10_IRQn 1 */
+}
+
+void EXTI9_5_IRQHandler(void)
+{
+	/* USER CODE BEGIN EXTI9_5_IRQn 0 */
+
+	/* USER CODE END EXTI9_5_IRQn 0 */
+	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_6);
+	/* USER CODE BEGIN EXTI9_5_IRQn 1 */
+
+	/* USER CODE END EXTI9_5_IRQn 1 */
 }

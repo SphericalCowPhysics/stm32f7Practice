@@ -87,7 +87,8 @@ VisualGDB/Debug/__BSP_ROOT__/STM32F7xxxx/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_
  C:/Users/chris/AppData/Local/VisualGDB/EmbeddedBSPs/arm-eabi/com.sysprogs.arm.stm32/STM32F7xxxx/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_jpeg.h \
  C:/Users/chris/AppData/Local/VisualGDB/EmbeddedBSPs/arm-eabi/com.sysprogs.arm.stm32/STM32F7xxxx/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_mdios.h \
  C:/Users/chris/AppData/Local/VisualGDB/EmbeddedBSPs/arm-eabi/com.sysprogs.arm.stm32/STM32F7xxxx/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_smbus.h \
- C:/Users/chris/AppData/Local/VisualGDB/EmbeddedBSPs/arm-eabi/com.sysprogs.arm.stm32/STM32F7xxxx/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_mmc.h
+ C:/Users/chris/AppData/Local/VisualGDB/EmbeddedBSPs/arm-eabi/com.sysprogs.arm.stm32/STM32F7xxxx/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_mmc.h \
+ src/main.h src/regs.h src/nvParams.h src/commands.h
 C:/Users/chris/AppData/Local/VisualGDB/EmbeddedBSPs/arm-eabi/com.sysprogs.arm.stm32/STM32F7xxxx/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
 src/stm32f7xx_hal_conf.h:
 C:/Users/chris/AppData/Local/VisualGDB/EmbeddedBSPs/arm-eabi/com.sysprogs.arm.stm32/STM32F7xxxx/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h:
@@ -176,3 +177,7 @@ C:/Users/chris/AppData/Local/VisualGDB/EmbeddedBSPs/arm-eabi/com.sysprogs.arm.st
 C:/Users/chris/AppData/Local/VisualGDB/EmbeddedBSPs/arm-eabi/com.sysprogs.arm.stm32/STM32F7xxxx/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_mdios.h:
 C:/Users/chris/AppData/Local/VisualGDB/EmbeddedBSPs/arm-eabi/com.sysprogs.arm.stm32/STM32F7xxxx/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_smbus.h:
 C:/Users/chris/AppData/Local/VisualGDB/EmbeddedBSPs/arm-eabi/com.sysprogs.arm.stm32/STM32F7xxxx/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_mmc.h:
+src/main.h:
+src/regs.h:
+src/nvParams.h:
+src/commands.h:

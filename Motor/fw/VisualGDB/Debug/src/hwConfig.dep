@@ -115,7 +115,8 @@ VisualGDB/Debug/src/hwConfig.o: src/hwConfig.c src/hwConfig.h \
  C:/Users/chris/AppData/Local/VisualGDB/EmbeddedBSPs/arm-eabi/com.sysprogs.arm.stm32/STM32F7xxxx/STM32_USB_Device_Library/Class/CDC/Inc/usbd_cdc.h \
  C:/Users/chris/AppData/Local/VisualGDB/EmbeddedBSPs/arm-eabi/com.sysprogs.arm.stm32/STM32F7xxxx/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
  src/usbd_cdc_if.h src/usbd_desc.h \
- C:/Users/chris/AppData/Local/VisualGDB/EmbeddedBSPs/arm-eabi/com.sysprogs.arm.stm32/STM32F7xxxx/STM32_USB_Device_Library/Core/Inc/usbd_def.h
+ C:/Users/chris/AppData/Local/VisualGDB/EmbeddedBSPs/arm-eabi/com.sysprogs.arm.stm32/STM32F7xxxx/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
+ src/main.h src/regs.h src/nvParams.h src/commands.h
 src/hwConfig.h:
 C:/Users/chris/AppData/Local/VisualGDB/EmbeddedBSPs/arm-eabi/com.sysprogs.arm.stm32/STM32F7xxxx/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
 src/stm32f7xx_hal_conf.h:
@@ -236,3 +237,7 @@ C:/Users/chris/AppData/Local/VisualGDB/EmbeddedBSPs/arm-eabi/com.sysprogs.arm.st
 src/usbd_cdc_if.h:
 src/usbd_desc.h:
 C:/Users/chris/AppData/Local/VisualGDB/EmbeddedBSPs/arm-eabi/com.sysprogs.arm.stm32/STM32F7xxxx/STM32_USB_Device_Library/Core/Inc/usbd_def.h:
+src/main.h:
+src/regs.h:
+src/nvParams.h:
+src/commands.h:
