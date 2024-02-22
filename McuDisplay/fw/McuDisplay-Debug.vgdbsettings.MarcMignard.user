@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<VisualGDBUserPreferences xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <UserDefinedVariableValues />
+  <DebugPreferences xsi:type="com.visualgdb.debug.embedded.preferences">
+    <CatchpointConfiguration>
+      <Exec>false</Exec>
+      <Fork>false</Fork>
+      <Vfork>false</Vfork>
+      <Syscalls />
+      <CXXCatchpoints />
+    </CatchpointConfiguration>
+    <MaskInterruptsWhileStepping>false</MaskInterruptsWhileStepping>
+    <MemoryWindowPreferences />
+    <e />
+    <b>
+      <a>
+        <a>com.sysprogs.AllGlobals</a>
+        <b />
+      </a>
+      <a>
+        <a>com.sysprogs.SpecificVariables</a>
+        <b />
+      </a>
+    </b>
+    <c>
+      <b>SpecificVariables</b>
+      <a>false</a>
+    </c>
+    <Suggestions />
+    <HardwareRegisters>
+      <HardwareRegisterRecord>
+        <Name>RCC.PLLCFGR</Name>
+        <State>
+          <IsFavorite>false</IsFavorite>
+          <IsLive>false</IsLive>
+          <LastUsed>133455221733250265</LastUsed>
+        </State>
+      </HardwareRegisterRecord>
+    </HardwareRegisters>
+  </DebugPreferences>
+</VisualGDBUserPreferences>
