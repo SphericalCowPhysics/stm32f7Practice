@@ -15,7 +15,16 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#define MotorPwmCounter_Pin GPIO_PIN_15
+#define MotorPwmCounter_GPIO_Port GPIOA
+#define MotorPwm_Pin GPIO_PIN_8
+#define MotorPwm_GPIO_Port GPIOA
+#define EncoderB_Pin GPIO_PIN_7
+#define EncoderB_GPIO_Port GPIOC
+#define EncoderA_Pin GPIO_PIN_6
+#define EncoderA_GPIO_Port GPIOC	
 	
+#define MotorPWM_EventsPer2ms 8000/2
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f7xx_hal.h"
@@ -24,7 +33,7 @@ extern "C" {
 #include "commands.h"
 	
 //#define EvalKit 1	
-#define BitBangMotor
+//#define BitBangMotor
 //#define InterruptTesting	
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);

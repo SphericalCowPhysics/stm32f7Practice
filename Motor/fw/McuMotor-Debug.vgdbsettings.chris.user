@@ -27,6 +27,15 @@
       <a>false</a>
     </c>
     <Suggestions />
-    <HardwareRegisters />
+    <HardwareRegisters>
+      <HardwareRegisterRecord>
+        <Name>GPIOI.IDR</Name>
+        <State>
+          <IsFavorite>false</IsFavorite>
+          <IsLive>false</IsLive>
+          <LastUsed>133528578881558647</LastUsed>
+        </State>
+      </HardwareRegisterRecord>
+    </HardwareRegisters>
   </DebugPreferences>
 </VisualGDBUserPreferences>

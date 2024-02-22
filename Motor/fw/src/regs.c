@@ -23,14 +23,18 @@ void WriteSpi8(uint8_t reg, uint8_t val);
 void WriteSpi16(uint8_t reg, uint16_t val);
 uint8_t ReadSpi8(uint8_t reg);
 int16_t ReadSpi16(uint8_t reg);
+void ReadLoadCell();
 //uint8_t directionEnable = 1;
 //uint16_t waste;
 
 void InitRegs() {
 	//Power-on intitializations
-	Regs.u16[RegMotorSteps], Regs.u16[RegMotorStepTime], Regs.u16[RegMotorDirEnable] = 0;
-	Regs.u16[RegEncoderCwSteps], Regs.u16[RegEncoderCCwSteps] = 0;
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);				//enables motor motion
+	Regs.u16[RegMotorStepTime] = 2;
+	Regs.u16[RegMotorSteps], Regs.u16[RegMotorDirEnable] = 0;
+	Regs.u16[RegEncoderCwSteps], Regs.u16[RegEncoderCCwSteps] = 0;						//Either use Cw/CCwSteps if using GPIO interrupts, or use Position/Velocity if using Timer Encoder interrupts
+	Regs.u16[RegEncoderPosition], Regs.u16[RegEncoderVelocity] = 0;
+	Regs.u16[RegLoadCellUpper16], Regs.u16[RegLoadCellLower8], Regs.u16[RegLoadCellOffset] = 0;
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);				//electro-mechanically enables motor motion
 }	
 
 //UpdateRegs called periodically in main()
@@ -73,9 +77,15 @@ uint8_t ReadReg(uint16_t nReg) {
 			break;
 		case RegAdcRef:
 			Regs.u16[nReg] = ReadAdc(17); //internal reference voltage (1.2Vnom), should be around 1.2/3.3*4095 = 1500, can use to calculate voltage of 3.3V supply
-			break;	   
-		default:
 			break;
+		case RegLoadCellUpper16:
+			ReadLoadCell();
+			break;
+		case RegLoadCellLower8:
+			//Do nothing. Reading Upper16 runs ReadLoadCell() which fills all 24 bits of data. Lower8 only exists because my Regs only support 16 bit data types
+			break;
+			default:
+				break;
     }  
     return err;
 }
@@ -103,6 +113,17 @@ void SetReg(uint16_t nReg, uint16_t value)
 		case RegMotorStepTime:
 			Regs.u16[nReg] = value;
 			break;	
+    case RegLoadCellOffset:
+	    Regs.u16[nReg] = value;
+	    break;	
+	    /*	//I shouldn't really ever need to reset these
+		case RegEncoderCwSteps:
+			Regs.u16[nReg] = value;
+			break;
+		case RegEncoderCCwSteps:
+			Regs.u16[nReg] = value;
+			break;
+	    */
 	    /*	//DO NOT CALL SETREG TO DO THINGS. SetReg should be reserved only for commands received over USB via Parse()
 		case RegMotorDirEnable:
 			Regs.u8[nReg] = value;
@@ -166,10 +187,11 @@ uint16_t ReadAdc(uint16_t chan)
 
 void SetCSN(uint8_t level)
 {
-	if (0 == level)
-		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
-	else
-		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
+	//Need to use PA8 as timer1 not chip select
+	//if (0 == level)
+		//HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);	
+	//else
+		//HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
 	
 }
 
@@ -219,5 +241,46 @@ int16_t ReadSpi16(uint8_t reg)
 	SetCSN(1);
 	return ((rcvDat[1] << 8) | rcvDat[2]);
 }
+
+void ReadLoadCell()
+{
+	//Let the PWM (PF9) send 24+gain pulses. During the first 24 pulses, DOut (PF8) will will send a bit of data from MSB to LSB. The last pulse(s) sets gain and channel
+	//PWM should have a 50% duty and a period of 0.4-100us. Without any delaying commands it is 1.5us.
+	//At the begining of a new transmission, the PWM must wait at least 0.1us after DOut goes low (start transmission) before it starts sending pulses.
+
+	uint16_t data[2] = { 0 };	
+		
+
+	if (HAL_GPIO_ReadPin(GPIOF, GPIO_PIN_8) == 0)		//DOut must start low before first clock rising edge to signal that transmissions are allowed
+	{
+		HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, 0);		//Clock starts low
+		//Get 16 upper bits
+		for (int i = 0; i < 16; i++)						
+		{
+			HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, 1);						//Clock goes high to receive a bit of data
+			data[0] |= HAL_GPIO_ReadPin(GPIOF, GPIO_PIN_8) << (15 - i);		//Data is received and stored starting with MSB
+			HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, 0);						//Clock goes low again	
+		}	
+
+		//Get 8 lower bits
+		for (int i = 0; i < 8; i++)			
+		{
+			HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, 1);						//Clock goes high to receive data
+			data[1] |= HAL_GPIO_ReadPin(GPIOF, GPIO_PIN_8) << (15 - i);		//Data is received and stored. The last 8 bits will remain 0, and should ultimatley be right shifted out when final data is read
+			HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, 0);						//Clock goes low again	
+		}
+		//Pulse the clock an extra time once, twice or thrice depending on desired gain and channel. By default, use 1 extra pulse for 128 gain on ChA
+		for (int i = 0; i < LoadCell_ChA_Gain128; i++)		
+		{
+			HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, 1);
+			HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, 0);
+		}
+		HAL_GPIO_WritePin(GPIOF, GPIO_PIN_9, 0);	//Ensure clock is low to prepare for next read command
+
+		Regs.u16[RegLoadCellUpper16] = data[0];
+		Regs.u16[RegLoadCellLower8] = data[1];
+	}
+}
+
 
 

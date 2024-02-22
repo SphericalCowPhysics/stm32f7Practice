@@ -17,6 +17,10 @@ extern "C" {
 #define REG_SIZE8      (REG_SIZE-4)
 #define REG_SIZE16     (REG_SIZE8/2)
 #define REG_SIZE32     (REG_SIZE16/2)
+	
+#define LoadCell_ChA_Gain128	1
+#define LoadCell_ChB_Gain32		2
+#define LoadCell_ChA_Gain64		3
 
 typedef struct REG_BLOCK {
 	 // 512 bytes - 4 per page
@@ -45,9 +49,15 @@ enum SYS_STATUS {
 	RegMotorDirEnable,				//5, MSB allows (1) or restricts (0) motion, LSB sets direction CW (1) or CCW (0) while looking toward load. Note, 0x8000 = uint_16t 0b10...0 
 	RegMotorSteps,					//6, How many steps to complete. When M0,1,2=LOW, 1step=1.8deg
 	RegMotorStepTime,			//7, The time of each step
+	/*Either use Cw/CCwSteps if using GPIO interrupts, or use Position/Velocity if using Timer Encoder interrupts*/
 	RegEncoderCwSteps,			//8, Counts the number of steps taken by encoder clockwise while looking at load (when Dir/LSB of RegMotorDirEnable=1). 600 steps = 1 revolution
 	RegEncoderCCwSteps,			//9, Counts the number of steps taken by encoder counter clockwise while looking at load (when Dir/LSB of RegMotorDirEnable=1). 600 steps = 1 revolution
-  RegLast
+	RegEncoderPosition,			//8, 
+	RegEncoderVelocity,			//9,	
+	RegLoadCellUpper16,			//10
+	RegLoadCellLower8,			//11
+	RegLoadCellOffset,			//12
+	RegLast
 };
 void InitRegs();
 uint8_t UpdateRegs();
